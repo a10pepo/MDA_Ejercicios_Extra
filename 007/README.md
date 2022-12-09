@@ -1,9 +1,7 @@
 # Description
 
-Ahora que ya tenemos datos, qué tal si hacemos alguna gráfica con ellos... ¿hay vida más allá de Tableau? 
+Hagamos un cambio y empecemos con Kafka, para ellos tenéis un entorno casi completo funcionando. Vuestro reto, es hacerlo funcionar y conseguir tener en esta URL los mensajes enviados por nuestro producer:
 
-Echádle un ojo a esto:
+http://localhost:8080/ui/clusters/local/topics
 
-https://grafana.com/
-
-¿Os atrevéis a arreglar el docker para montarlo? Sois capaces de crear una gráfica dentro de grafana? Ponedme una captura de pantalla del resultado.
+La segunda parte del reto, es conseguir crear un contenedor que sea consumidor y recoja los mensajes de tópico y los meta en una base de datos con todo lo visto en los anteriores.
