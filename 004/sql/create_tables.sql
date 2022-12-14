@@ -53,7 +53,7 @@ CREATE TABLE IF NOT EXISTS status_name (
 CREATE TABLE IF NOT EXISTS sale (
   sale_id varchar(200) NOT NULL,
   amount DECIMAL(20,3) NOT NULL,
-  date_sale varchar(450) NOT NULL,
+  date_sale TIMESTAMP NULL DEFAULT '0000-00-00 00:00:00',
   product_id INT NOT NULL,
   user_id INT NOT NULL,
   store_id INT NOT NULL, 
