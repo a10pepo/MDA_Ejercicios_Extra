@@ -48,11 +48,12 @@ CREATE TABLE IF NOT EXISTS status_name (
   PRIMARY KEY (status_name_id)
 );
 
+
 -- Creation of sale table
 CREATE TABLE IF NOT EXISTS sale (
   sale_id varchar(200) NOT NULL,
   amount DECIMAL(20,3) NOT NULL,
-  date_sale TIMESTAMP,
+  date_sale varchar(450) NOT NULL,
   product_id INT NOT NULL,
   user_id INT NOT NULL,
   store_id INT NOT NULL, 
@@ -68,10 +69,12 @@ CREATE TABLE IF NOT EXISTS sale (
 	  REFERENCES store(store_id)	  
 );
 
+
+
 -- Creation of order_status table
 CREATE TABLE IF NOT EXISTS order_status (
   order_status_id varchar(200) NOT NULL,
-  update_at TIMESTAMP,
+  update_at varchar(450) NOT NULL,
   sale_id varchar(200) NOT NULL,
   status_name_id INT NOT NULL,
   PRIMARY KEY (order_status_id),
