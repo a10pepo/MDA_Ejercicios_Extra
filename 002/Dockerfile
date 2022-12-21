@@ -1,7 +1,7 @@
-FROM 3.7.15-alpine3.17
+FROM python
 
 WORKDIR /app
 COPY main.py main.py
 
+CMD ["python","main.py"]
 
-CMD python app/main.py
