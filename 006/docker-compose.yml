@@ -6,8 +6,8 @@ services:
     ports:
       - "5432:5432"
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgresadmin
+      POSTGRES_USER: cta
+      POSTGRES_PASSWORD: cta
     volumes:
       # copy the sql script to create tables
       - ./sql:/docker-entrypoint-initdb.d
@@ -18,15 +18,18 @@ services:
     ports:
       - "3000:80"
     environment:
-      PGADMIN_DEFAULT_EMAIL: admin@edem.com
-      PGADMIN_DEFAULT_PASSWORD: admin
+      PGADMIN_DEFAULT_EMAIL: cta
+      PGADMIN_DEFAULT_PASSWORD: cta
     volumes:
       - ./config/servers.json:/pgadmin4/servers.json
 
   grafana:
+    build: .
     image: grafana/grafana:7.5.7
     ports:
-      - 3000:3000
+      - 3001:3000
+    depends_on:
+    - db
     restart: unless-stopped
     volumes:
       - ./grafana/provisioning/datasources:/etc/grafana/provisioning/datasources
@@ -34,4 +37,3 @@ services:
       
 volumes:
   grafana-data:
-
