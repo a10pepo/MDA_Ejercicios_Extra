@@ -21,8 +21,12 @@ while True:
     try:
         print("Start sending data")
         # Construir el json
+        producer.send('prueba', {'key': '1'})
         # ENVIAR DATOS AL TOPICO
-        producer.flush()
+        for i in range(10):
+            m = f"hello python {i}"
+            producer.send('prueba1', m)
+            producer.flush()
         print("Message Sent")
         sleep(5)
     except Exception as e: 

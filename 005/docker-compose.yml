@@ -1,32 +1,60 @@
 version: '3'
  
 services:
+  python:
+    container_name: python_paramysql
+    build: ./python
+    command: sh -c "sleep 10s; python3 ./main.py"
+    depends_on:
+      - db
+    links:
+      - db
+    networks: 
+      - db
+  
+  
   db:
-    image: postgres:latest
-    container_name: db
+    image: mysql:latest
+    container_name: db_container
     environment:
       MYSQL_ROOT_PASSWORD: my_secret_password
-      MYSQL_DATABASE: app_db
+      MYSQL_DATABASE: db
       MYSQL_USER: db_user
       MYSQL_PASSWORD: user_password
+      
     ports:
-      - "6033:3305"
+      - "3306:3306"
+    networks: 
+      - db
     volumes:
       - dbdata:/var/lib/mysql
-      - ./conf:/docker-entrypoint-initdb.d
+      - ./sql:/docker-entrypoint-initdb.d
+
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
     container_name: pma
     links:
       - db
     environment:
-      PMA_HOST: mysql_host
+      PMA_HOST: db
       PMA_PORT: 3306
       PMA_ARBITRARY: 1
     restart: always
     ports:
       - 8081:80
+    networks: 
+      - db
+    
+networks:
+  db:
+    external: false
+    name: db
+    driver: bridge
+
 volumes:
   dbdata:
+  mysql-config:
+
+
 
 

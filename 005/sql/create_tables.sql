@@ -18,9 +18,10 @@ CREATE TABLE IF NOT EXISTS city (
   city_name varchar(450) NOT NULL,
   country_id INT NOT NULL,
   PRIMARY KEY (city_id),
-  CONSTRAINT fk_country
+  CONSTRAINT fk_country 
       FOREIGN KEY(country_id) 
 	  REFERENCES country(country_id)
+    
 );
 
 -- Creation of store table
