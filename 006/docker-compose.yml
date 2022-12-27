@@ -1,39 +1,33 @@
 version: "3.8"
 services:
-  db:
-    image: postgres:10.5
-    restart: always
-    ports:
-      - "5432:5432"
-    environment:
-      POSTGRES_USER: cta
-      POSTGRES_PASSWORD: cta
-    volumes:
-      # copy the sql script to create tables
-      - ./sql:/docker-entrypoint-initdb.d
-  pgadmin:
-    image: dpage/pgadmin4
-    container_name: pgadmin4_container
-    restart: always
-    ports:
-      - "3000:80"
-    environment:
-      PGADMIN_DEFAULT_EMAIL: cta
-      PGADMIN_DEFAULT_PASSWORD: cta
-    volumes:
-      - ./config/servers.json:/pgadmin4/servers.json
-
   grafana:
-    build: .
-    image: grafana/grafana:7.5.7
+    image: grafana/grafana
     ports:
-      - 3001:3000
-    depends_on:
-    - db
-    restart: unless-stopped
+      - 3000:3000
+
+  prometheus:
+    image: prom/prometheus
+    ports:
+      - 9090:9090
     volumes:
-      - ./grafana/provisioning/datasources:/etc/grafana/provisioning/datasources
-      - grafana-data:/var/lib/grafana
-      
-volumes:
-  grafana-data:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml:ro
+
+  postgres:
+    image: postgres:latest
+    ports:
+      - 5432:5432
+    volumes:
+      - ./backup:/var/lib/postgresql/data
+    environment:
+      POSTGRES_PASSWORD: postgrespassword
+      POSTGRES_DB: shop
+
+  postgres-exporter:
+    image: prometheuscommunity/postgres-exporter
+    ports:
+      - 9187:9187
+    environment:
+      DATA_SOURCE_NAME: "postgresql://postgres:postgrespassword@postgres:5432/shop?sslmode=disable"
+    links:
+      - postgres
+      - prometheus
