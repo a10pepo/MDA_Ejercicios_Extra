@@ -13,4 +13,4 @@ Una vez hayáis completado vuestro ejercicio, podéis pedir una PR para que os c
 
 Ánimo!!!
 
-<div align="center"><img src="https://media.tenor.com/IWBYGs5WlhkAAAAC/how-i-met-your-mother-himym.gif"/></div>
+<div align="center"><img src="https://media.giphy.com/media/vTxWtmX2b0oH6/giphy.gif"/></div>

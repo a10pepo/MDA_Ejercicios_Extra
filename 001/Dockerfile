@@ -1,5 +1,5 @@
-FROM alpine
+FROM python
 
+COPY script.py /script.py
 
-
-CMD [ "hola" ] 
+CMD ["python", "script.py"]

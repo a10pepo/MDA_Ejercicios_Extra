@@ -1,37 +1,33 @@
 version: "3.8"
 services:
-  db:
-    image: postgres:10.5
-    restart: always
-    ports:
-      - "5432:5432"
-    environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgresadmin
-    volumes:
-      # copy the sql script to create tables
-      - ./sql:/docker-entrypoint-initdb.d
-  pgadmin:
-    image: dpage/pgadmin4
-    container_name: pgadmin4_container
-    restart: always
-    ports:
-      - "3000:80"
-    environment:
-      PGADMIN_DEFAULT_EMAIL: admin@edem.com
-      PGADMIN_DEFAULT_PASSWORD: admin
-    volumes:
-      - ./config/servers.json:/pgadmin4/servers.json
-
   grafana:
-    image: grafana/grafana:7.5.7
+    image: grafana/grafana
     ports:
       - 3000:3000
-    restart: unless-stopped
-    volumes:
-      - ./grafana/provisioning/datasources:/etc/grafana/provisioning/datasources
-      - grafana-data:/var/lib/grafana
-      
-volumes:
-  grafana-data:
 
+  prometheus:
+    image: prom/prometheus
+    ports:
+      - 9090:9090
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml:ro
+
+  postgres:
+    image: postgres:latest
+    ports:
+      - 5432:5432
+    volumes:
+      - ./backup:/var/lib/postgresql/data
+    environment:
+      POSTGRES_PASSWORD: postgrespassword
+      POSTGRES_DB: shop
+
+  postgres-exporter:
+    image: prometheuscommunity/postgres-exporter
+    ports:
+      - 9187:9187
+    environment:
+      DATA_SOURCE_NAME: "postgresql://postgres:postgrespassword@postgres:5432/shop?sslmode=disable"
+    links:
+      - postgres
+      - prometheus
