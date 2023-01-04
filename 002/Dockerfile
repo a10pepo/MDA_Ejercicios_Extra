@@ -1,7 +1,9 @@
-FROM 3.7.15-alpine3.17
+FROM alpine
+
+RUN apk add python3
 
 WORKDIR /app
-COPY main.py main.py
+COPY main.py app/main.py
 
 
-CMD python app/main.py
+CMD ["python", "app/main.py"]
