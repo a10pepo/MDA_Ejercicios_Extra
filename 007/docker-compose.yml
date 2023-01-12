@@ -35,3 +35,7 @@ services:
   publisher:
     build: publisher
     restart: always
+
+  subscriber:
+    build: subscriber
+    restart: always
