@@ -1,7 +1,4 @@
-FROM 3.7.15-alpine3.17
-
+FROM python:3.7.15-alpine3.17
 WORKDIR /app
-COPY main.py main.py
-
-
+COPY main.py app/main.py
 CMD python app/main.py

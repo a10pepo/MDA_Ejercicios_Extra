@@ -2,7 +2,7 @@
 CREATE TABLE IF NOT EXISTS product (
   product_id INT NOT NULL,
   name varchar(250) NOT NULL,
-  PRIMARY KEY (product)
+  PRIMARY KEY (product_id)
 );
 
 -- Creation of country table
@@ -15,7 +15,7 @@ CREATE TABLE IF NOT EXISTS country (
 -- Creation of city table
 CREATE TABLE IF NOT EXISTS city (
   city_id INT NOT NULL,
-  city_name varchar(1) NOT NULL,
+  city_name varchar(100) NOT NULL,
   country_id INT NOT NULL,
   PRIMARY KEY (city_id),
   CONSTRAINT fk_country
@@ -69,7 +69,7 @@ CREATE TABLE IF NOT EXISTS sale (
 );
 
 -- Creation of order_status table
-CREAT TABLE IF NOT EXISTS order_status (
+CREATE TABLE IF NOT EXISTS order_status (
   order_status_id varchar(200) NOT NULL,
   update_at TIMESTAMP,
   sale_id varchar(200) NOT NULL,
