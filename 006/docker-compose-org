@@ -9,20 +9,29 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgresadmin
     volumes:
-      # copy the sql script to create and fill tables
+      # copy the sql script to create tables
       - ./sql:/docker-entrypoint-initdb.d
-      # copy the csv files to fill tables
-      - ./db:/data/
   pgadmin:
     image: dpage/pgadmin4
     container_name: pgadmin4_container
     restart: always
     ports:
-      - "5050:80"
+      - "3000:80"
     environment:
       PGADMIN_DEFAULT_EMAIL: admin@edem.com
       PGADMIN_DEFAULT_PASSWORD: admin
     volumes:
       - ./config/servers.json:/pgadmin4/servers.json
 
+  grafana:
+    image: grafana/grafana:7.5.7
+    ports:
+      - 3000:3000
+    restart: unless-stopped
+    volumes:
+      - ./grafana/provisioning/datasources:/etc/grafana/provisioning/datasources
+      - grafana-data:/var/lib/grafana
+      
+volumes:
+  grafana-data:
 
