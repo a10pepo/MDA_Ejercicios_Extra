@@ -65,18 +65,20 @@ for i in list_files:
     df.to_csv(file_name, index=False)
 
     if i != "city":
-        sql_csv = """LOAD DATA  INFILE '/var/lib/mysql-files/%s.csv'
-        INTO TABLE %s 
-        FIELDS TERMINATED BY ',' 
-        ENCLOSED BY '"'
-        LINES TERMINATED BY '\n'
-        IGNORE 1 ROWS;""" % (i,i)
+        # sql_csv = """LOAD DATA  INFILE '/var/lib/mysql-files/%s.csv'
+        # INTO TABLE %s 
+        # FIELDS TERMINATED BY ',' 
+        # ENCLOSED BY '"'
+        # LINES TERMINATED BY '\n'
+        # IGNORE 1 ROWS;""" % (i,i)
 
-        mycursor.execute(sql_csv)
+        # mycursor.execute(sql_csv)
+
+        df.to_sql(con=mydb, name=i, if_exists='replace')
 
         mydb.commit()
 
-        print(mycursor.rowcount, "record order_status inserted.")
+        print("record dataframe {} inserted.".format(i))
 
     else:
         # Extracting countries from cities.csv original file

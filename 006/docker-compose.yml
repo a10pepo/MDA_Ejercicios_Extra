@@ -10,7 +10,7 @@ services:
       MYSQL_USER: db_user
       MYSQL_PASSWORD: user_password
     ports:
-      - "3305:3305"
+      - "3308:3306"
     volumes:
       # copy the csv files to fill tables to the secure dir in the mysql container
       - dbdata:/var/lib/mysql-files/
