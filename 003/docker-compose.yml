@@ -9,8 +9,10 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgresadmin
     volumes:
-      # copy the sql script to create tables
+      # copy the sql script to create and fill tables
       - ./sql:/docker-entrypoint-initdb.d
+      # copy the csv files to fill tables
+      - ./db:/data/
   pgadmin:
     image: dpage/pgadmin4
     container_name: pgadmin4_container
