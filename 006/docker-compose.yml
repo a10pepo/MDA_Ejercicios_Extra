@@ -1,28 +1,32 @@
 version: "3.8"
 services:
-  db:
-    image: postgres:10.5
+  mysql:
+    image: mysql:5.7
+    container_name: mysql_container
+    environment:
+      MYSQL_ROOT_PASSWORD: admin
+      MYSQL_DATABASE: app_db
+      MYSQL_USER: mysql_user
+      MYSQL_PASSWORD: admin
+    ports:
+      - "6033:3306"
+    volumes:
+      # - dbdata:/var/lib/mysql 
+      - ./conf:/docker-entrypoint-initdb.d
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: pma
+    links:
+      - mysql
+    environment:
+      PMA_HOST: mysql
+      PMA_PORT: 3306
+      PMA_ARBITRARY: 1
     restart: always
     ports:
-      - "5432:5432"
-    environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgresadmin
-    volumes:
-      # copy the sql script to create tables
-      - ./sql:/docker-entrypoint-initdb.d
-  pgadmin:
-    image: dpage/pgadmin4
-    container_name: pgadmin4_container
-    restart: always
-    ports:
-      - "3000:80"
-    environment:
-      PGADMIN_DEFAULT_EMAIL: admin@edem.com
-      PGADMIN_DEFAULT_PASSWORD: admin
-    volumes:
-      - ./config/servers.json:/pgadmin4/servers.json
-
+      - 8081:80
+    depends_on:
+    - mysql
   grafana:
     image: grafana/grafana:7.5.7
     ports:
@@ -31,7 +35,19 @@ services:
     volumes:
       - ./grafana/provisioning/datasources:/etc/grafana/provisioning/datasources
       - grafana-data:/var/lib/grafana
-      
+    depends_on:
+      - mysql
+  python:
+    image: python:3.8-slim-buster
+    container_name: python_db
+    volumes:
+      - ./python:/app
+    command: python /app/main.py
+    links:
+      - mysql
+    depends_on:
+      - mysql
 volumes:
   grafana-data:
+  mysql-data:
 
