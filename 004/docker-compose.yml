@@ -2,15 +2,15 @@ version: '3'
  
 services:
   db:
-    image: postgres:latest
+    image: mysql:latest
     container_name: db
     environment:
-      MYSQL_ROOT_PASSWORD: my_secret_password
+      MYSQL_ROOT_PASSWORD: admin
       MYSQL_DATABASE: app_db
       MYSQL_USER: db_user
-      MYSQL_PASSWORD: user_password
+      MYSQL_PASSWORD: admin
     ports:
-      - "6033:3305"
+      - "6033:3306"
     volumes:
       - dbdata:/var/lib/mysql
       - ./conf:/docker-entrypoint-initdb.d
@@ -20,12 +20,14 @@ services:
     links:
       - db
     environment:
-      PMA_HOST: mysql_host
-      PMA_PORT: 3306
+      PMA_HOST: db
+      PMA_PORT: 6033
       PMA_ARBITRARY: 1
     restart: always
     ports:
       - 8081:80
+    depends_on:
+      - db
 volumes:
   dbdata:
 
