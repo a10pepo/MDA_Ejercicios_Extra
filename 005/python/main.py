@@ -1,11 +1,14 @@
 import mysql.connector
 import time
+import socket
+
+ip = socket.gethostbyname(socket.gethostname())
 
 def insert_data(table_name, data):
 
     try:
         connection = mysql.connector.connect(
-            host="172.24.224.1", #mi IP
+            host=ip, #mi IP
             port=6033,
             user="db_user",
             password="admin",
@@ -49,9 +52,9 @@ CREATE TABLE IF NOT EXISTS store (
 time.sleep(20) # Wait 20 seconds to ensure db is running
 
 store_data = {
-    "store_id" : 1467,
-    "name" : "Mercadona",
-    "city_id" : 2341,
+    "store_id" : 1456,
+    "name" : "Walmart",
+    "city_id" : 783,
 }
 
 insert_data("store", store_data)
