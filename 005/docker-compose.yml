@@ -14,6 +14,9 @@ services:
     volumes:
       - dbdata:/var/lib/mysql
       - ./sql:/docker-entrypoint-initdb.d
+    networks:
+      - mysql
+
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
     container_name: pma
@@ -28,17 +31,24 @@ services:
       - 8081:80
     depends_on:
       - db
+      
   python:
     build: ./python
     container_name: python_db
     volumes:
-      - ./python:/app
+      - dbdata:/datos/
     links:
       - db
-    depends_on:
-      - db
+    networks:
+      - mysql
 
 volumes:
   dbdata:
+
+networks:
+  mysql:
+    external: false
+    name: mysql
+    driver: bridge
 
 

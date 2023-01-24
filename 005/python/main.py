@@ -1,39 +1,35 @@
 import mysql.connector
-import os
 import time
 
 def insert_data(table_name, data):
-    while True:
-        try:
-            connection = mysql.connector.connect(
-                host= "172.24.224.1",
-                port=3306,
-                user="db_user",
-                password="admin",
-                database="app_db"
-            )
 
-            break
+    try:
+        connection = mysql.connector.connect(
+            host="172.24.224.1", #mi IP
+            port=6033,
+            user="db_user",
+            password="admin",
+            database="app_db"
+        )
 
-        except:
-            print('Waiting for database to intialize')
-            time.sleep(1)
+        cursor = connection.cursor()
 
-            cursor = connection.cursor()
+        columns = ', '.join(data.keys())
+        placeholders = ', '.join(['%s'] * len(data))
+        sql_query = f"INSERT INTO {table_name} ({columns}) VALUES ({placeholders})"
 
-            columns = ', '.join(data.keys())
-            placeholders = ', '.join(['%s'] * len(data))
-            sql_query = f"INSERT INTO {table_name} ({columns}) VALUES ({placeholders})"
+        cursor.execute(sql_query, tuple(data.values()))
+        connection.commit()
+        print("Data inserted successfully into table")
 
-            cursor.execute(sql_query, tuple(data.values()))
-            connection.commit()
-            print("Data inserted successfully into table")
+    except mysql.connector.Error as error:
+        print("Error while connecting to MySQL: ", error)
 
-        finally:
-            if connection.is_connected():
-                cursor.close()
-                connection.close()
-                print("MySQL connection is closed")
+    finally:
+        if connection.is_connected():
+            cursor.close()
+            connection.close()
+            print("MySQL connection is closed")
 
 
 
@@ -49,6 +45,8 @@ CREATE TABLE IF NOT EXISTS store (
 	  REFERENCES city(city_id)
 );
 '''
+
+time.sleep(20) # Wait 20 seconds to ensure db is running
 
 store_data = {
     "store_id" : 1467,
