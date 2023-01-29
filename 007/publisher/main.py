@@ -1,10 +1,13 @@
 from time import sleep
 from json import dumps
 from kafka import KafkaProducer
-
+import requests
 
 connecting=True
-print("Start Process")
+print("Starting connection")
+
+# Tries to connect to kafka broker until connected
+
 while connecting:
     try:
         print("Start producer Connection")
@@ -17,14 +20,21 @@ while connecting:
         connecting=True
         sleep(5)
 
+# Start sending data 
+ 
 while True:
     try:
-        print("Start sending data")
-        # Construir el json
-        # ENVIAR DATOS AL TOPICO
-        producer.flush()
-        print("Message Sent")
-        sleep(5)
+        for i in range (0,100):
+            
+            # Get request from demo API. Recieving a json for each product.
+            r = requests.get("https://dummyjson.com/products?skip="+str(i)+"&limit=1")
+            res = r.json()
+            message = res['products'][0]
+            # Send json with product data to kafka topic 'topic_test'
+            producer.send("topic_test",message)
+            producer.flush()
+            print("Message Sent")
+
     except Exception as e: 
         print(e)
         print("Error in the topic")
