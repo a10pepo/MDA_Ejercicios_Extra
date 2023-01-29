@@ -1,5 +1,7 @@
 FROM python:3.9.15-slim
 
+# Esta parte ya sabéis cómo va
+
 WORKDIR /app
 COPY main.py main.py
 COPY requirements.txt requirements.txt

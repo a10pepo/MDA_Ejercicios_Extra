@@ -16,7 +16,7 @@ services:
     container_name: pgadmin4_container
     restart: always
     ports:
-      - "5050:80"
+      - "3000:80"
     environment:
       PGADMIN_DEFAULT_EMAIL: admin@edem.com
       PGADMIN_DEFAULT_PASSWORD: admin

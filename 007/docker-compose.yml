@@ -31,42 +31,7 @@ services:
     environment:
       - KAFKA_CLUSTERS_0_NAME=local
       - KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS=kafka:29092
-      - KAFKA_CLUSTERS_0_ZOOKEEPER=zookeeper:2181
-      
+
   publisher:
     build: publisher
     restart: always
-    depends_on:
-      - kafka-ui
-  consumer:
-    build: consumer
-    restart: always
-    depends_on:
-      - db
-  db:
-    image: postgres:14-alpine
-    restart: always
-    ports:
-      - "5432:5432"
-    environment:
-      POSTGRES_USER: ${POSTGRES_USER:-postgres}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgresadmin}
-      POSTGRES_DB: ${POSTGRES_DB:-pg_db}
-      # copy the sql script to create tables
-    volumes:
-      - ./consumer/sql:/docker-entrypoint-initdb.d
-  pgadmin:
-    image: dpage/pgadmin4
-    container_name: pgadmin4_container
-    restart: always
-    depends_on:
-      - db
-    ports:
-      - "5050:80"
-    environment:
-      PGADMIN_DEFAULT_EMAIL: admin@edem.com
-      PGADMIN_DEFAULT_PASSWORD: admin
-    volumes:
-      - ./consumer/config/servers.json:/pgadmin4/servers.json
-
-  
